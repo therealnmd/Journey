@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
     private Animator _anim;
+    private GameManager gameManager;
+
 
     [Header("Move info")]
     [SerializeField] public float speed;
@@ -45,11 +47,17 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
+        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.IsGameOver())
+        {
+            return;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         Jump();
         WallJump();

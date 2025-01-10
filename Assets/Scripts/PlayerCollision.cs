@@ -19,7 +19,12 @@ public class PlayerCollision : MonoBehaviour
 
         if (collision.CompareTag("Trap"))
         {
-            Debug.Log("Ouch");
+            gameManager.HitTrap(1);
+        }
+
+        if (collision.CompareTag("Enemy"))
+        {
+            gameManager.HitTrap(1);
         }
     }
 
