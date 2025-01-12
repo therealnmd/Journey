@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -10,13 +10,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI trapText;
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject winUI;
 
     private bool isGameOver = false;
+    private bool isGameWin = false;
     // Start is called before the first frame update
     void Start()
     {
         UpdateScore();
         gameOverUI.SetActive(false);
+        winUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -48,6 +51,11 @@ public class GameManager : MonoBehaviour
   
     }
 
+    public void HitEnd()
+    {
+        Win();
+    }
+
     public void UpdateTrap()
     {
         trapText.text = traps.ToString();
@@ -61,17 +69,53 @@ public class GameManager : MonoBehaviour
         gameOverUI.SetActive(true); //hien panel GameOver len
     }
 
+    public void Win()
+    {
+        isGameWin = true;
+        Time.timeScale = 0;
+        winUI.SetActive(true);
+    }
+
     public void RestartGame()
     {
         isGameOver = false;
         score = 0;
         UpdateScore();
         Time.timeScale = 1; //cho phep player thao tac lai
-        SceneManager.LoadScene("SampleScene"); //khoi tao lai Scene Game
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //khoi tao lai Scene Game
     }
 
+    public void Continue()
+    {
+        int sceneHienTai = SceneManager.GetActiveScene().buildIndex;
+
+        // Check if there is a next scene
+        if (sceneHienTai < SceneManager.sceneCountInBuildSettings - 1)
+        {
+            // Load the next scene
+            SceneManager.LoadScene(sceneHienTai + 1);
+        }
+        else
+        {
+            Debug.Log("Chưa có màn mới, cảm ơn đã chơi hết!");
+        }
+
+        Time.timeScale = 1; // Unfreeze the game
+    }
+
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+        Time.timeScale = 1;
+    }
     public bool IsGameOver()
     {
         return isGameOver;
     }
+
+    public bool IsGameWin()
+    {
+        return isGameWin;
+    }
+    
 }

@@ -26,6 +26,11 @@ public class PlayerCollision : MonoBehaviour
         {
             gameManager.HitTrap(1);
         }
+
+        if (collision.CompareTag("End"))
+        {
+            gameManager.HitEnd();
+        }
     }
 
     // Start is called before the first frame update
